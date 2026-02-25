@@ -19,6 +19,15 @@ namespace Final_Task.Utils
         public static ChromeOptions GetChromeOptions()
         {
             ChromeOptions options = new ChromeOptions();
+
+            if (Environment.GetEnvironmentVariable("CI") == "true")
+            {
+                options.AddArgument("--headless=new");
+                options.AddArgument("--no-sandbox");
+                options.AddArgument("--disable-dev-shm-usage");
+                options.AddArgument("--disable-gpu");
+            }
+
             options.AddArgument("--disable-save-password-bubble");
             options.AddArgument("ignore-certificate-errors");
             options.AddArgument("--start-maximized");

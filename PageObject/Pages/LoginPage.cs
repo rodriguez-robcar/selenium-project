@@ -52,25 +52,24 @@ namespace Final_Task.PageObject.Pages
             this.UsernameField.SendKeys(username);
             this.PasswordField.SendKeys(password);
 
-            this.UsernameField.SendKeys(Keys.Control + "a");
-            this.UsernameField.SendKeys(Keys.Delete);
-
-            this.PasswordField.SendKeys(Keys.Control + "a");
-            this.PasswordField.SendKeys(Keys.Delete);
-
             var clearFieldWait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10));
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                 clearFieldWait.Until(driver => string.IsNullOrEmpty(this.PasswordField.GetAttribute("value")));
+                this.UsernameField.SendKeys(Keys.Command + "a");
+                this.UsernameField.SendKeys(Keys.Backspace);
+
+                clearFieldWait.Until(driver =>
+                    string.IsNullOrEmpty(this.UsernameField.GetAttribute("value")));
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
+                this.UsernameField.SendKeys(Keys.Control + "a");
+                this.UsernameField.SendKeys(Keys.Delete);
+
+                // this.PasswordField.SendKeys(Keys.Control + "a");
+                // this.PasswordField.SendKeys(Keys.Delete);
                 clearFieldWait.Until(driver => this.UsernameField.GetAttribute("value") == string.Empty);
-            }
-            else
-            {
-                throw new PlatformNotSupportedException("Unsupported operating system.");
             }
 
             this.LoginButton.Click();
@@ -86,11 +85,25 @@ namespace Final_Task.PageObject.Pages
             this.UsernameField.SendKeys(username);
             this.PasswordField.SendKeys(password);
 
-            this.PasswordField.SendKeys(Keys.Control + "a");
-            this.PasswordField.SendKeys(Keys.Delete);
-
+            // this.PasswordField.SendKeys(Keys.Control + "a");
+            // this.PasswordField.SendKeys(Keys.Delete);
             var clearFieldWait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10));
-            clearFieldWait.Until(driver => this.PasswordField.GetAttribute("value") == string.Empty);
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                this.PasswordField.SendKeys(Keys.Command + "a");
+                this.PasswordField.SendKeys(Keys.Backspace);
+
+                clearFieldWait.Until(driver =>
+                string.IsNullOrEmpty(this.PasswordField.GetAttribute("value")));
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                this.PasswordField.SendKeys(Keys.Control + "a");
+                this.PasswordField.SendKeys(Keys.Delete);
+
+                clearFieldWait.Until(driver => this.UsernameField.GetAttribute("value") == string.Empty);
+            }
 
             this.LoginButton.Click();
         }

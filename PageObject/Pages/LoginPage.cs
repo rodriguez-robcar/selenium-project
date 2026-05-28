@@ -4,6 +4,8 @@
 
 namespace Final_Task.PageObject.Pages
 {
+    using System;
+    using System.Runtime.InteropServices;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.UI;
 
@@ -57,7 +59,19 @@ namespace Final_Task.PageObject.Pages
             this.PasswordField.SendKeys(Keys.Delete);
 
             var clearFieldWait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10));
-            clearFieldWait.Until(driver => this.UsernameField.GetAttribute("value") == string.Empty);
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                 clearFieldWait.Until(driver => string.IsNullOrEmpty(this.PasswordField.GetAttribute("value")));
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                clearFieldWait.Until(driver => this.UsernameField.GetAttribute("value") == string.Empty);
+            }
+            else
+            {
+                throw new PlatformNotSupportedException("Unsupported operating system.");
+            }
 
             this.LoginButton.Click();
         }

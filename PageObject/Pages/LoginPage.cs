@@ -67,8 +67,6 @@ namespace Final_Task.PageObject.Pages
                 this.UsernameField.SendKeys(Keys.Control + "a");
                 this.UsernameField.SendKeys(Keys.Delete);
 
-                // this.PasswordField.SendKeys(Keys.Control + "a");
-                // this.PasswordField.SendKeys(Keys.Delete);
                 clearFieldWait.Until(driver => this.UsernameField.GetAttribute("value") == string.Empty);
             }
 
@@ -85,8 +83,6 @@ namespace Final_Task.PageObject.Pages
             this.UsernameField.SendKeys(username);
             this.PasswordField.SendKeys(password);
 
-            // this.PasswordField.SendKeys(Keys.Control + "a");
-            // this.PasswordField.SendKeys(Keys.Delete);
             var clearFieldWait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10));
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -102,7 +98,7 @@ namespace Final_Task.PageObject.Pages
                 this.PasswordField.SendKeys(Keys.Control + "a");
                 this.PasswordField.SendKeys(Keys.Delete);
 
-                clearFieldWait.Until(driver => this.UsernameField.GetAttribute("value") == string.Empty);
+                clearFieldWait.Until(driver => this.PasswordField.GetAttribute("value") == string.Empty);
             }
 
             this.LoginButton.Click();
